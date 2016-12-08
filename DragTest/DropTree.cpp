@@ -58,8 +58,31 @@ LRESULT CDropTree::OnDrop(WPARAM pDropInfoClass, LPARAM lParm)
 		char* lp = (char *)GlobalLock((HGLOBAL) hMem);//lock source
 		if (lp != NULL)
 		{
-			//Set Windows title with Drop text 
-			SetWindowText( lp );
+			CString str = lp;
+			//Set Windows title with Drop text
+			DWORD dwPos = ::GetMessagePos();
+			CPoint pt(LOWORD(dwPos), HIWORD(dwPos));
+			ScreenToClient(&pt);                                                                //得到树形视图客户区坐标
+			HTREEITEM hTreeItem=HitTest(pt);
+			if (SelectItem(hTreeItem))
+			{
+				CString myStr = GetItemText(hTreeItem);
+				if (myStr != "循环")
+				{
+					if (GetParentItem(hTreeItem) !=NULL)
+						HTREEITEM sub_root = this->InsertItem(str,0,1,GetParentItem(hTreeItem),TVI_LAST);
+					else
+						HTREEITEM root = this->InsertItem(str,0,1,TVI_ROOT,TVI_LAST);
+				}
+				else
+				{
+					HTREEITEM root = this->InsertItem(str,0,1,hTreeItem,TVI_LAST);
+				}	
+			}
+			else
+				HTREEITEM sub_root = this->InsertItem(str,0,1,TVI_ROOT,TVI_LAST);
+			this->Expand(hTreeItem,TVE_EXPAND);
+			UpdateData(TRUE);
 		}
 		GlobalUnlock( hMem );//unlock source
 		return TRUE;

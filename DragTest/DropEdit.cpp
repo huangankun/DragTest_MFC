@@ -121,6 +121,7 @@ void CDropEdit::OnLButtonDown(UINT nFlags, CPoint point)
 	COleDataSource source;
 	source.CacheGlobalData( CF_TEXT, hData );
 	source.DoDragDrop( DROPEFFECT_COPY );
+	
 	GlobalFree( hData );
 	m_bDraging = FALSE;	//ÕÍ≥…Õœ∂Ø
 }

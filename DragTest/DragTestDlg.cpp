@@ -61,6 +61,7 @@ void CDragTestDlg::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_TREE1, m_DropTree);
 	DDX_Control(pDX, IDC_EDIT1, m_Edit1);
 	DDX_Control(pDX, IDC_EDIT2, m_Edit2);
+	DDX_Control(pDX,IDC_TREE2,m_DropTree2);
 }
 
 BEGIN_MESSAGE_MAP(CDragTestDlg, CDialogEx)
@@ -111,6 +112,9 @@ BOOL CDragTestDlg::OnInitDialog()
 
 	if( !m_DropTree.Register() )
 		TRACE("register drop listbox faile");
+
+	if( !m_DropTree2.Register() )
+		TRACE("register drop listbox faile");
 	// TODO: Add extra initialization here
 	//HTREEITEM hroot= m_DropTree.InsertItem("树控件");
 	//m_DropTree.InsertItem("子节点",hroot);
@@ -123,7 +127,14 @@ BOOL CDragTestDlg::OnInitDialog()
 	HTREEITEM sub_son12=m_DropTree.InsertItem(_T("控制 1-3"),0,1,root0,TVI_LAST);
 	HTREEITEM sub_son1=m_DropTree.InsertItem(_T("并行 2-1"),0,1,root1,TVI_LAST);
 
+	HTREEITEM root20=m_DropTree2.InsertItem(_T("控制 1-1"),0,1,TVI_ROOT,TVI_LAST);
+	HTREEITEM root21=m_DropTree2.InsertItem(_T("并行 2-1"),0,1,TVI_ROOT,TVI_LAST);
+	HTREEITEM root22=m_DropTree2.InsertItem(_T("循环"),0,1,TVI_ROOT,TVI_LAST);
+
+
 	m_DropTree.Expand(root0,TVE_EXPAND);
+	m_DropTree2.Expand(root0,TVE_EXPAND);
+
 
 	return TRUE;  // return TRUE  unless you set the focus to a control
 }

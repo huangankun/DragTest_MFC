@@ -35,6 +35,7 @@ protected:
 	DECLARE_MESSAGE_MAP()
 public:
 	CDropTree m_DropTree;
+	CDropTree m_DropTree2;
 	CDropEdit m_Edit1;
 	CDropEdit m_Edit2;
 	afx_msg void OnBnClickedButtonOpen();
