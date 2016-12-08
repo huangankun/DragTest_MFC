@@ -322,13 +322,16 @@ void CDragTestDlg::OnBnClickedButtonSave()
 		CFileException exp;
 		BOOL bCreateFile = file1.Open(fileDlg.GetPathName(),CFile::modeCreate,&exp);
 		file1.Close();
-		CString strFileName;
-		GetDlgItemText(IDC_EDIT2,strFileName);
-		CStdioFile file2(fileDlg.GetPathName(),CFile::modeWrite);
-		MessageBox(strFileName);
-		file2.WriteString(strFileName);
-		file2.Flush();
-		file2.Close();
+		CString strFileName,strBuf;
+		int nodeCount = m_DropTree2.GetCount();
+		HTREEITEM root_node = m_DropTree2.GetRootItem();
+		m_DropTree2.ExpandTreeItems(m_DropTree2,root_node,fileDlg.GetPathName(),strBuf);
+		GetDlgItemText(	IDC_TREE2,strFileName);
+		//CStdioFile file2(fileDlg.GetPathName(),CFile::modeWrite);
+		//MessageBox(strFileName);
+		//file2.WriteString(strFileName);
+		//file2.Flush();
+		//file2.Close();
 		strFilePath = fileDlg.GetPathName();   
 		SetDlgItemText(IDC_EDIT1, strFilePath);   
 	}   

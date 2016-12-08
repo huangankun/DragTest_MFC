@@ -4,6 +4,7 @@
 #include "stdafx.h"
 //#include "dropexdemo.h"
 #include "DropTree.h"
+#include <string.h>
 
 #ifdef _DEBUG
 #define new DEBUG_NEW
@@ -62,7 +63,7 @@ LRESULT CDropTree::OnDrop(WPARAM pDropInfoClass, LPARAM lParm)
 			//Set Windows title with Drop text
 			DWORD dwPos = ::GetMessagePos();
 			CPoint pt(LOWORD(dwPos), HIWORD(dwPos));
-			ScreenToClient(&pt);                                                                //得到树形视图客户区坐标
+			ScreenToClient(&pt);    //得到树形视图客户区坐标
 			HTREEITEM hTreeItem=HitTest(pt);
 			if (SelectItem(hTreeItem))
 			{
@@ -150,4 +151,33 @@ void CDropTree::OnLButtonDown(UINT nFlags, CPoint point)
 	source.DoDragDrop( DROPEFFECT_COPY );
 	GlobalFree( hData );
 	m_bDraging = FALSE;	//完成拖动
+}
+void   CDropTree::ExpandTreeItems(const   CTreeCtrl&   tree,HTREEITEM   hItem,CString filePathName,CString strBuf) 
+{ 
+	if (tree.GetItemText(hItem)== "循环")
+	{
+		HTREEITEM   hChildItem = tree.GetChildItem(hItem); 
+		strBuf = strBuf + "\r\n"+
+		if ( NULL != hChildItem)
+			ExpandTreeItems(tree,hChildItem,filePathName);
+
+
+		HTREEITEM hSib = tree.GetNextSiblingItem(hItem);
+		if (hSib != NULL)
+			ExpandTreeItems(tree,hSib,filePathName);
+	}
+	AfxMessageBox( tree.GetItemText(hItem));
+	CStdioFile file2(filePathName,CFile::modeWrite);
+	file2.WriteString(tree.GetItemText(hItem));
+	file2.Flush();
+	file2.Close();
+
+	HTREEITEM   hChildItem = tree.GetChildItem(hItem); 
+	if ( NULL != hChildItem)
+		ExpandTreeItems(tree,hChildItem,filePathName);
+
+
+	HTREEITEM hSib = tree.GetNextSiblingItem(hItem);
+	if (hSib != NULL)
+		ExpandTreeItems(tree,hSib,filePathName);
 }

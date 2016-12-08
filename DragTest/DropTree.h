@@ -35,7 +35,7 @@ public:
 	virtual BOOL Register();
 	virtual ~CDropTree();
 	BOOL m_bDraging;
-	
+	void ExpandTreeItems(const   CTreeCtrl&   tree,HTREEITEM   hItem,CString filrPathName,CString strBuf); 
 
 	// Generated message map functions
 protected:
