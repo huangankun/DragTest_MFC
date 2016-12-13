@@ -157,14 +157,14 @@ void   CDropTree::ExpandTreeItems(const   CTreeCtrl&   tree,HTREEITEM   hItem,CS
 	if (tree.GetItemText(hItem)== "Ñ­»·")
 	{
 		HTREEITEM   hChildItem = tree.GetChildItem(hItem); 
-		strBuf = strBuf + "\r\n"+
+		strBuf = strBuf + "\r\n";
 		if ( NULL != hChildItem)
-			ExpandTreeItems(tree,hChildItem,filePathName);
+			ExpandTreeItems(tree,hChildItem,filePathName,strBuf);
 
 
 		HTREEITEM hSib = tree.GetNextSiblingItem(hItem);
 		if (hSib != NULL)
-			ExpandTreeItems(tree,hSib,filePathName);
+			ExpandTreeItems(tree,hSib,filePathName,strBuf);
 	}
 	AfxMessageBox( tree.GetItemText(hItem));
 	CStdioFile file2(filePathName,CFile::modeWrite);
@@ -174,10 +174,10 @@ void   CDropTree::ExpandTreeItems(const   CTreeCtrl&   tree,HTREEITEM   hItem,CS
 
 	HTREEITEM   hChildItem = tree.GetChildItem(hItem); 
 	if ( NULL != hChildItem)
-		ExpandTreeItems(tree,hChildItem,filePathName);
+		ExpandTreeItems(tree,hChildItem,filePathName,strBuf);
 
 
 	HTREEITEM hSib = tree.GetNextSiblingItem(hItem);
 	if (hSib != NULL)
-		ExpandTreeItems(tree,hSib,filePathName);
+		ExpandTreeItems(tree,hSib,filePathName,strBuf);
 }

@@ -70,6 +70,7 @@ BEGIN_MESSAGE_MAP(CDragTestDlg, CDialogEx)
 	ON_WM_QUERYDRAGICON()
 	ON_BN_CLICKED(IDC_BUTTON_OPEN, &CDragTestDlg::OnBnClickedButtonOpen)
 	ON_BN_CLICKED(IDC_BUTTON_SAVE, &CDragTestDlg::OnBnClickedButtonSave)
+	ON_BN_CLICKED(IDC_BUTTON1, &CDragTestDlg::OnBnClickedButton1)
 END_MESSAGE_MAP()
 
 
@@ -336,4 +337,45 @@ void CDragTestDlg::OnBnClickedButtonSave()
 		SetDlgItemText(IDC_EDIT1, strFilePath);   
 	}   
 	// TODO: 在此添加控件通知处理程序代码
+}
+
+HANDLE hEvent= CreateEvent(NULL,FALSE,FALSE,NULL);
+int code = 0;
+void CDragTestDlg::OnBnClickedButton1()
+{
+	// TODO: 
+	SetEvent(hEvent);
+	if (code ==0)
+	{
+		pThread = AfxBeginThread(ThreadFunc,this,THREAD_PRIORITY_NORMAL,0,0,NULL);
+		code ++;
+	}
+	else
+		code =0;
+
+}
+
+UINT ThreadFunc(LPVOID lpParam)
+{
+	
+	CDragTestDlg *pDlg = (CDragTestDlg *)lpParam;
+	HTREEITEM hTreeItem = pDlg->m_DropTree2.GetRootItem();
+	pDlg->ExpandTreeItem(pDlg->m_DropTree2,hTreeItem);
+	return 0;
+}
+
+void CDragTestDlg::ExpandTreeItem(CTreeCtrl& tree,HTREEITEM hItem)
+{
+		WaitForSingleObject(hEvent, INFINITE); 
+		tree.SetItemState(hItem,LVIS_SELECTED,LVIS_SELECTED);
+		CString strBuf = "正在执行命令  "+(tree.GetItemText(hItem));
+		AfxMessageBox(strBuf);
+		ResetEvent(hEvent);
+		Sleep(1000);
+		HTREEITEM   hChildItem = tree.GetChildItem(hItem); 
+		if ( NULL != hChildItem)
+			ExpandTreeItem(tree,hChildItem);
+		HTREEITEM hSib = tree.GetNextSiblingItem(hItem);
+		if (NULL != hSib)
+			ExpandTreeItem(tree,hSib);
 }

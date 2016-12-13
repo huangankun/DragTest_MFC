@@ -26,7 +26,7 @@ public:
 // Implementation
 protected:
 	HICON m_hIcon;
-
+	
 	// Generated message map functions
 	virtual BOOL OnInitDialog();
 	afx_msg void OnSysCommand(UINT nID, LPARAM lParam);
@@ -38,6 +38,10 @@ public:
 	CDropTree m_DropTree2;
 	CDropEdit m_Edit1;
 	CDropEdit m_Edit2;
+	CWinThread* pThread;							//线程变量
 	afx_msg void OnBnClickedButtonOpen();
 	afx_msg void OnBnClickedButtonSave();
+	afx_msg void OnBnClickedButton1();
+	void ExpandTreeItem(CTreeCtrl&   tree,HTREEITEM   hItem);
 };
+UINT ThreadFunc(LPVOID lpParam); //线程处理函数
