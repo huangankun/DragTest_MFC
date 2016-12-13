@@ -350,8 +350,7 @@ void CDragTestDlg::OnBnClickedButton1()
 		pThread = AfxBeginThread(ThreadFunc,this,THREAD_PRIORITY_NORMAL,0,0,NULL);
 		code ++;
 	}
-	else
-		code =0;
+
 
 }
 
@@ -361,6 +360,7 @@ UINT ThreadFunc(LPVOID lpParam)
 	CDragTestDlg *pDlg = (CDragTestDlg *)lpParam;
 	HTREEITEM hTreeItem = pDlg->m_DropTree2.GetRootItem();
 	pDlg->ExpandTreeItem(pDlg->m_DropTree2,hTreeItem);
+	code =0;
 	return 0;
 }
 
@@ -371,7 +371,7 @@ void CDragTestDlg::ExpandTreeItem(CTreeCtrl& tree,HTREEITEM hItem)
 		CString strBuf = "ÕýÔÚÖ´ÐÐÃüÁî  "+(tree.GetItemText(hItem));
 		AfxMessageBox(strBuf);
 		ResetEvent(hEvent);
-		Sleep(1000);
+		//Sleep(1000);
 		HTREEITEM   hChildItem = tree.GetChildItem(hItem); 
 		if ( NULL != hChildItem)
 			ExpandTreeItem(tree,hChildItem);
